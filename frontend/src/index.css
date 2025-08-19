@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: "F1";
+  src: url("/fonts/149842a4797e8b79.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "F2";
+  src: url("/fonts/38f6b871fae4dd6b.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "F3";
+  src: url("/fonts/c8a98e579ceef11f.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
