@@ -1,29 +1,48 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { UserDataContext } from '../context/UserContext'
+
 
 const UserRegister = () => {
   const [firstname, setfirstname] = useState("")
-  const [lasttname, setlastname] = useState("")
+  const [lastname, setlastname] = useState("")
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
 
   const [userData, setuserData] = useState({})
+  const { user, setuser } = useContext(UserDataContext)
+  const navigate = useNavigate()
 
-  const submitHandler = (e)=>{
+  const submitHandler = async (e) => {
     e.preventDefault()
-    setuserData({
-      firstname:firstname,
-      lasttname:lasttname,
-      email:email,
-      password:password
-    })
+    const newUser = {
+      fullname: {
+        firstname: firstname,
+        lastname: lastname,
+      },
+      email: email,
+      password: password
+    }
+    console.log(newUser)
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+      if (response.status === 200) {
+        const data = response.data
+        setuser(data.user)
+        localStorage.setItem('token',data.token)
+        navigate('/home')
+      }
+    } catch (error) {
+      console.log(error.response.data) // 👈 ye line error ka actual message dikhayegi
+    }
 
 
     setemail("")
     setfirstname("")
     setlastname("")
     setpassword("")
-    
+
   }
 
 
@@ -40,7 +59,7 @@ const UserRegister = () => {
           />
         </div>
 
-        <form onSubmit={(e)=>{submitHandler(e)}} >
+        <form onSubmit={(e) => { submitHandler(e) }} >
           <h3 className='text-lg mb-2  font-[F1]'>What's your name?</h3>
           <div className='flex flex-row gap-8 mb-6'>
             <input
@@ -53,7 +72,7 @@ const UserRegister = () => {
             />
             <input
               required
-               value={lasttname}
+              value={lastname}
               onChange={(e) => setlastname(e.target.value)}
               type="text"
               className='bg-[#eee]  px-4 py-2 border text-lg placeholder:text-base rounded-xl w-1/2'
@@ -75,8 +94,8 @@ const UserRegister = () => {
           <h3 className='text-lg mb-2 font-[F1]'>Enter your password</h3>
           <input
             required
-             value={password}
-              onChange={(e) => setpassword(e.target.value)}
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
             type="password"
             className='bg-[#eee] px-4 text-lg placeholder:text-base py-2 mb-6 border rounded-xl w-full'
             placeholder='password'

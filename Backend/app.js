@@ -7,9 +7,10 @@ const cookieParser = require('cookie-parser');
 const connectToDB = require("./config/db")
 const userRoutes = require('./routes/user.routes');
 const captainRoutes = require("./routes/captain.routes")
+const chalk = require("chalk");
 
-
-connectToDB();
+connectToDB()  .then(() => console.log(chalk.cyanBright("Database connected successfully")))
+  .catch(err => console.log(chalk.redBright("Database connection failed: "), err));;
 
 app.use(cors());
 app.use(express.json());
