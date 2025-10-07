@@ -7,7 +7,7 @@ const Start = () => {
                 <img className="w-20 ml-6 " src="https://companieslogo.com/img/orig/UBER.D-f23d4b1c.png?t=1635007057" alt="Uber" />
                 <div className="bg-white pb-7 p-4 ">
                     <h1 className='text-black  font-[F3] text-3xl  '>Started with Uber</h1>
-                    <Link to="/users/login"  className=" flex justify-center items-center w-full bg-black rounded-full font-[F3] text-white py-3 mt-5 text-xl ">Continue as User Login</Link >
+                    <Link to="/users/login"  className=" flex justify-center items-center w-full bg-black rounded-full font-[F3] text-white py-3 mt-5 text-xl ">Continue</Link >
                 </div>
             </div>
         </div>

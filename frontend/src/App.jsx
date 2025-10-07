@@ -40,7 +40,7 @@ const App = () => {
           </UserProtectWrapper>
         } />
         <Route path='/users/login' element={<UserLogin />} />
-        <Route path='/users/riding' element={<Riding/>} />
+        <Route path='/riding' element={<Riding/>} />
         <Route path='/users/register' element={<UserRegister />} />
         <Route path='/captains/register' element={<CaptainRegister />} />
         <Route path='/captains/login' element={<CaptainLogin />} />

@@ -11,7 +11,7 @@ const CaptainRegister = () => {
   const [password, setPassword] = useState("")
   const [captainData, setCaptainData] = useState({})
 
-  const { captain, setcaptain } = useContext(CaptainDataContext)
+  const { captain, setCaptain } = useContext(CaptainDataContext)
 
   // vehicle fields
   const [vehiclecolor, setvehicleColor] = useState("")
@@ -43,18 +43,25 @@ const CaptainRegister = () => {
 
       try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`,captainData)
-        if(response.status===200){
+        if(response.status===201 || response.status === 200 ){
           const data = response.data
-          setcaptain(data.captain)
+          setCaptain(data.captain)
           localStorage.setItem('token',data.token)
           navigate('/captains/home')
         }
       } catch (error) {
-        console.log(error.response.data)
-      }
+  if (error.response) {
+    // Server responded with a status code out of 2xx
+    console.log("Server error:", error.response.data);
+  } else if (error.request) {
+    // Request made but no response
+    console.log("No response from server:", error.request);
+  } else {
+    // Something went wrong in setting up the request
+    console.log("Axios error:", error.message);
+  }
+}
 
-    console.log(captainData) 
-    // ✅✅✅
 
     // Reset fields
     setEmail("")
