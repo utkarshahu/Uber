@@ -12,6 +12,7 @@ import CaptainHome from './pages/CaptainHome.jsx'
 import CaptainProtectWrapper from './pages/CaptainProtectWrapper.jsx'
 import Riding from './pages/Riding.jsx'
 import LookingForDriver from './components/LookingForDriver.jsx'
+import CaptainRiding from './pages/CaptainRiding.jsx'
 
 // import { UserDataContext } from './context/UserContext.jsx'
 
@@ -44,6 +45,7 @@ const App = () => {
         <Route path='/users/register' element={<UserRegister />} />
         <Route path='/captains/register' element={<CaptainRegister />} />
         <Route path='/captains/login' element={<CaptainLogin />} />
+        <Route path='/captain-riding' element={<CaptainRiding />} />
         
       </Routes>
 

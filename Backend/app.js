@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const connectToDB = require("./config/db")
 const userRoutes = require('./routes/user.routes');
 const captainRoutes = require("./routes/captain.routes")
+const mapsRoutes = require("./routes/maps.routes")
+
 const chalk = require("chalk");
 
 connectToDB()  .then(() => console.log(chalk.cyanBright("Database connected successfully")))
@@ -24,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use("/users",userRoutes)
 app.use("/captains",captainRoutes)
+app.use("/maps",mapsRoutes)
 
 
 module.exports = app;
