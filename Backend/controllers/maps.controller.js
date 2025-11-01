@@ -18,7 +18,7 @@ module.exports.getCoordinates = async (req, res, next) => {
 };
 
 
-module.exports.getDistanceTime = async (req, res) => {
+module.exports.getDistanceTime = async (req, res,next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -41,3 +41,19 @@ module.exports.getDistanceTime = async (req, res) => {
     });
   }
 };
+
+module.exports.getSuggestions = async (req, res,next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    } 
+    const { input } = req.query;
+    const suggestions = await mapService.getSuggestions(input);
+    res.status(200).json(suggestions); 
+
+  } catch (error) {
+    console.log("Error fetching suggestions:", error);
+    res.status(500).json({ message: 'Error fetching suggestions' });
+  }
+}

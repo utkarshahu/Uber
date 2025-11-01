@@ -1,6 +1,29 @@
 // services/map.service.js
 const axios = require('axios');
 
+
+const GEOAPIFY_API_KEY =
+process.env.GEOAPIFY_API
+
+async function getCoordinates(text) {
+  const url = 'https://api.geoapify.com/v1/geocode/search';
+  const { data } = await axios.get(url, {
+    params: {
+      text,
+      format: 'json', // JSON returns data.results[0].lat/lon
+      apiKey: GEOAPIFY_API_KEY,
+    },
+  });
+
+  if (!data || !data.results || data.results.length === 0) {
+    throw new Error(`Location not found for: ${text}`);
+  }
+
+  const { lat, lon, formatted } = data.results[0];
+  return { lat, lon, formatted };
+}
+
+
 module.exports.getAddressCoordinate = async (address) => {
   const apiKey = process.env.GEOAPIFY_API;
   const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(address)}&apiKey=${apiKey}`;
@@ -29,26 +52,6 @@ module.exports.getAddressCoordinate = async (address) => {
 };
 
 
-const GEOAPIFY_API_KEY =
-  process.env.GEOAPIFY_API
-
-async function getCoordinates(text) {
-  const url = 'https://api.geoapify.com/v1/geocode/search';
-  const { data } = await axios.get(url, {
-    params: {
-      text,
-      format: 'json', // JSON returns data.results[0].lat/lon
-      apiKey: GEOAPIFY_API_KEY,
-    },
-  });
-
-  if (!data || !data.results || data.results.length === 0) {
-    throw new Error(`Location not found for: ${text}`);
-  }
-
-  const { lat, lon, formatted } = data.results[0];
-  return { lat, lon, formatted };
-}
 
 module.exports.getDistanceTime = async (origin, destination, options = {}) => {
   if (!origin || !destination) {
@@ -119,4 +122,43 @@ if (timeSeconds < 3600) {
     type,
     units,
   };
+};
+
+module.exports.getSuggestions = async (input, offset = 0, limit = 10) => {
+  if (!input) {
+    throw new Error("Query is required for suggestions");
+  }
+
+  const apiKey = process.env.GEOAPIFY_API;
+
+  const url = `https://api.geoapify.com/v1/geocode/autocomplete
+  ?text=${encodeURIComponent(input)}
+  &limit=${limit}
+  &offset=${offset}
+  &lang=en
+  &apiKey=${apiKey}`.replace(/\s+/g, ""); // remove spaces
+
+  try {
+    const response = await axios.get(url);
+
+    if (response.data.features?.length > 0) {
+      return response.data.features.map(f => ({
+        formatted: f.properties.formatted,
+        landmark: f.properties.name || null,
+        road: f.properties.street || null,
+        city: f.properties.city || f.properties.town || f.properties.village,
+        district: f.properties.district || null,
+        state: f.properties.state || null,
+        postcode: f.properties.postcode || null,
+        country: f.properties.country || null,
+        lat: f.geometry.coordinates[1],
+        lng: f.geometry.coordinates[0],
+      }));
+    } else {
+      throw new Error("No suggestions found");
+    }
+  } catch (error) {
+    console.error("Geoapify API Request Failed:", error.message);
+    throw error;
+  }
 };

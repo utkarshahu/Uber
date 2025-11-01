@@ -14,14 +14,18 @@ router.get('/get-coordinates',
 
 router.get(
   '/distance-time',
-  // authMiddleware.authUser, // optional, testing ke liye hata sakte ho
-   query('origin').trim().isString().isLength({ min: 3 }),
+  authMiddleware.authUser, // ensure auth runs before controller
+  query('origin').trim().isString().isLength({ min: 3 }),
   query('destination').trim().isString().isLength({ min: 3 }),
   query('units').optional().trim().isIn(['metric', 'imperial']),
-  mapController.getDistanceTime,authMiddleware.authUser
+  mapController.getDistanceTime
 );
 
-module.exports = router;
+router.get("/get-suggestions",
+  query('input').trim().isString().isLength({ min: 3 }),
+  authMiddleware.authUser,
+  mapController.getSuggestions
+)
 
 
 module.exports = router;
