@@ -1,5 +1,6 @@
 const mapService = require('../services/map.service');
 const { validationResult } = require('express-validator');
+const captainModel = require('../models/captain.model');
 
 module.exports.getCoordinates = async (req, res, next) => {
   const errors = validationResult(req);
@@ -57,3 +58,29 @@ module.exports.getSuggestions = async (req, res,next) => {
     res.status(500).json({ message: 'Error fetching suggestions' });
   }
 }
+
+module.exports.getCaptainInTheRadius = async (req, res, next) => {
+  try {
+    const { ltd, lng, radius } = req.query; 
+    if (!ltd || !lng || !radius) {
+      return res.status(400).json({ message: 'lat, lng, and radius are required' });
+    } 
+    const captains = await captainModel.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [
+            [parseFloat(lng), parseFloat(lat)],
+            parseFloat(radius) / 3963.2 // radius in radians
+          ]
+        }   
+      },
+      status: 'active' // only active captains
+    }); 
+    res.status(200).json(captains);
+  } catch (error) {
+    console.error("Error fetching captains in radius:", error);
+    res.status(500).json({ message: 'Error fetching captains' });
+  }   
+};
+
+

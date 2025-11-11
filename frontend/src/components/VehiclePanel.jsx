@@ -10,6 +10,7 @@ const VehiclePanel = (props) => {
 
         <div onClick={()=>{
             props.setconfirmRidePanel(true)
+            props.selectVehicle('auto')
         }} className="flex bg-white w-full justify-between rounded-xl mb-2 active:border-black  border-2 border-gray-50 p-2 gap-4">
           {/* Ride Image */}
           <img
@@ -33,7 +34,7 @@ const VehiclePanel = (props) => {
           </div>
           {/* Price */}
           <h2 className="text-xl font-semibold bg-white flex items-top pr-4  ">
-            <span className="mr-1">&#8377;</span>70.20
+            <span className="mr-1">&#8377;</span>{props.fare?.fares?.auto || 'N/A'}
           </h2>
 
 
@@ -41,12 +42,13 @@ const VehiclePanel = (props) => {
         <div 
         onClick={()=>{
             props.setconfirmRidePanel(true)
+            props.selectVehicle('bike')
         }}
         className="flex bg-white w-full justify-between rounded-xl mb-2 border-2 active:border-black border-gray-50 p-2 gap-4">
           {/* Ride Image */}
           <img
             className="h-16 self-center w-24 object-contain "
-            src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,w_956,h_637/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png"
+            src="https://img.autocarpro.in/autocarpro/4d3ef0c9-c75e-46a3-af25-fab216e0bfe8_Untitled.jpg"
             alt="Uber Go"
           />
 
@@ -65,7 +67,7 @@ const VehiclePanel = (props) => {
           </div>
           {/* Price */}
           <h2 className="text-xl font-semibold bg-white flex items-top pr-4  ">
-            <span className="mr-1">&#8377;</span>100.20
+            <span className="mr-1">&#8377;</span>{props.fare?.fares?.bike || 'N/A'} 
           </h2>
 
 
@@ -73,6 +75,7 @@ const VehiclePanel = (props) => {
         <div 
         onClick={()=>{
             props.setconfirmRidePanel(true)
+            props.selectVehicle('car')
         }}
         className="flex bg-white w-full justify-between rounded-xl mb-2 border-2 active:border-black border-gray-50 p-2 gap-4">
           {/* Ride Image */}
@@ -97,7 +100,7 @@ const VehiclePanel = (props) => {
           </div>
           {/* Price */}
           <h2 className="text-xl font-semibold bg-white flex items-top pr-4  ">
-            <span className="mr-1">&#8377;</span>193.20
+            <span className="mr-1">&#8377;</span>{props.fare?.fares?.car || 'N/A'}
           </h2>
         </div>
 

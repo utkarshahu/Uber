@@ -20,7 +20,11 @@ module.exports.createCaptain = async ({
                 plate,
                 capacity,
                 vehicleType
-            }
+            },
+            location: {
+        ltd: 0,  // ✅ Default location
+        lng: 0
+      }
         });
 
         return captain;

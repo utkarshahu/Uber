@@ -171,11 +171,50 @@ fetch('/users/login', {
 - **Password Hashing:** Always hash passwords using a secure algorithm like `bcrypt`.
 - **JWT Authentication:** Store the token client-side (preferably in HTTP-only cookies or secure storage) and use it for subsequent requests.
 - **Error Handling:** Check for validation errors before proceeding with DB operations.
+// ...existing code...
 
-***
+### 3. GET /rides/fare
+**Description:** Estimates fare between a pickup and destination without creating a ride. The endpoint returns per-vehicle fares plus distance and duration (raw + human-readable).
 
-Utkarsh,  
-✅ Now your API documentation contains **both `/users/register` and `/users/login`** in the **exact same style** for consistency.  
-If you want, I can also give you the **Express + MongoDB + JWT code** for these routes so you can directly implement them.  
+#### Query Parameters
+- pickup (string, required) — pickup address (min 3 chars)
+- destination (string, required) — destination address (min 3 chars)
+- vehicleType (string, optional) — one of `auto`, `car`, `bike`
 
-Do you want me to prepare that code next?
+#### Validation Rules
+- `pickup` and `destination` must be non-empty strings (min length 3)
+- `vehicleType` if provided must be one of `auto`, `car`, `bike`
+
+#### Example Response (200 OK)
+```json
+{
+  "fare": {
+    "fares": { "auto": 70, "car": 193, "bike": 50 },
+    "distance": { "raw": 2200, "display": "2.2 km" },
+    "duration": { "raw": 420, "display": "7 mins" }
+  }
+}
+```
+
+#### Errors
+- 400 Bad Request — validation errors:
+```json
+{ "errors": [ { "msg": "Pickup is required", "param": "pickup" } ] }
+```
+- 500 Internal Server Error — unexpected failures:
+```json
+{ "message": "An unexpected error occurred. Please try again later." }
+```
+
+#### Example cURL
+```
+curl -G "http://localhost:3000/rides/fare" \
+  --data-urlencode "pickup=Gomti Nagar, Lucknow" \
+  --data-urlencode "destination=Hazratganj, Lucknow" \
+  --data-urlencode "vehicleType=auto"
+```
+
+#### Notes
+- Implementation entry: [`ride.controller.getFare`](backend/controllers/ride.controller.js) — it validates input and calls the service.
+- Calculation logic: [`ride.service.getFare`](backend/services/ride.service.js) — uses map service to compute distance/duration and returns formatted fare data.
+- If you haven't added the route yet, add a GET route in [backend/routes/ride.routes.js](backend/routes/ride.routes.js) (validate query params as above).

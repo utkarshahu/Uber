@@ -13,12 +13,7 @@ const LocationSearchPanel = ({
   setopenPanel,
   setVehiclePanel
 }) => {
-  // Debug: inspect what you're receiving
-  useEffect(() => {
-    console.log("LocationSearchPanel suggestions (raw):", suggestions);
-  }, [suggestions]);
-
-  // normalize suggestions -> always an array
+  // normalize suggestions
   const safeSuggestions = Array.isArray(suggestions)
     ? suggestions
     : suggestions
@@ -26,21 +21,22 @@ const LocationSearchPanel = ({
       : [];
 
   if (!activeField) {
-    return <div className="p-4 text-gray-500">Click input and type 3+ chars to get suggestions</div>;
+    return (
+      <div className="p-4 text-gray-500">
+        Click input and type 3+ chars to get suggestions
+      </div>
+    );
   }
 
   const getLabel = (item) => {
-    // If it's a string, return it
     if (typeof item === "string") return item;
     if (!item || typeof item !== "object") return String(item);
 
-    // Prefer known keys from your backend
     return (
       item.formatted ||
       item.description ||
       item.place_name ||
       (item.city && item.state ? `${item.city}, ${item.state}` : null) ||
-      // final fallback to a short JSON so React renders a string, not object
       JSON.stringify(item)
     );
   };
@@ -50,8 +46,7 @@ const LocationSearchPanel = ({
     if (activeField === "pickup") setpickup(label);
     else setdestination(label);
 
-    setopenPanel(false);
-    if (typeof setVehiclePanel === "function") setVehiclePanel(true);
+    if (typeof setVehiclePanel === "function") setVehiclePanel(false);
   };
 
   return (
@@ -73,7 +68,9 @@ const LocationSearchPanel = ({
           );
         })
       ) : (
-        <p className="text-gray-500 text-center mt-4">No suggestions found</p>
+        <p className="text-gray-500 text-center mt-4">
+          No suggestions found
+        </p>
       )}
     </div>
   );

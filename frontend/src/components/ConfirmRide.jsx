@@ -35,12 +35,12 @@ const ConfirmRide = (props) => {
             <div className="flex flex-col ml-4 w-full">
               <h1 className="text-xl font-[F3]">562/11-A</h1>
               <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                Gomti Nagar Lucknow
+                {props.pickup}
               </h1>
             </div>
           </div>
 
-          {/* Drop */}
+          {/* destination */}
           <div className="flex items-center border-b-2 border-gray-300 pb-2">
             <div className="bg-[#eee] h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0">
               <i className="ri-map-pin-2-fill text-2xl"></i>
@@ -48,7 +48,7 @@ const ConfirmRide = (props) => {
             <div className="flex flex-col ml-4 w-full">
               <h1 className="text-xl font-[F3]">353B/5/532-A</h1>
               <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                Shiv Nagar Khadra Lucknow Shiv Nagar Khadra Lucknow Shiv Nagar
+                {props.destination}
               </h1>
             </div>
           </div>
@@ -59,21 +59,25 @@ const ConfirmRide = (props) => {
               <i className="ri-money-rupee-circle-fill text-2xl"></i>
             </div>
             <div className="flex flex-col ml-4 w-full">
-              <h1 className="text-xl font-[F3]">&#8377; 562.30</h1>
+              <h1 className="text-xl font-[F3]">
+                &#8377; {props.fare?.fares?.[props.vehicleType] || "N/A"}
+              </h1>
+
               <p className="text-sm font-[F1] leading-5 text-gray-600">Cash</p>
             </div>
           </div>
         </div>
 
         {/* Confirm Button */}
-       
-          <button onClick={()=>{
-            props.setVehicleFound(true)
-            props.setconfirmRidePanel(false)
-          }} className="bg-gray-500 text-white active:bg-gray-600 transition-all duration-200 px-6 py-2 rounded-3xl text-lg mt-6 font-[F2] w-full shadow-sm border border-gray-800 active:scale-95">
-            Confirm Ride
-          </button>
-      
+
+        <button onClick={() => {
+          props.setVehicleFound(true)
+          props.setconfirmRidePanel(false)
+          props.createRide()
+        }} className="bg-gray-500 text-white active:bg-gray-600 transition-all duration-200 px-6 py-2 rounded-3xl text-lg mt-6 font-[F2] w-full shadow-sm border border-gray-800 active:scale-95">
+          Confirm Ride
+        </button>
+
       </div>
     </div>
   );

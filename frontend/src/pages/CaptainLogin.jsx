@@ -18,13 +18,25 @@ const CaptainLogin = () => {
       password: password
     }
 
-   
+   console.log("Base URL:", import.meta.env.VITE_BASE_URL);
+
     
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain);
+      const response = await axios.post(
+  `${import.meta.env.VITE_BASE_URL}/captains/login`,
+  captain,
+  {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+  
+);
+console.log(response)
 
       if(response.status===200){
         const data = response.data
+        console.log(data)
         setCaptainData(data.captain)
         localStorage.setItem('token',data.token)
         navigate("/captains/home")
@@ -34,16 +46,14 @@ const CaptainLogin = () => {
       console.error('Login failed:', error);
       // Optionally show error to user
     }
-
-    console.log(captainData)
     setEmail('')
     setPassword('')
   }
 
    
-  // useEffect(() => {
-  //   console.log('Captain data updated:', captainData)
-  // }, [captainData])  // run every time captainData changes
+  useEffect(() => {
+    console.log('Captain data updated:', captainData)
+  }, [captainData])  // run every time captainData changes
 
 
   return (

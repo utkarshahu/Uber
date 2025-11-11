@@ -1,6 +1,6 @@
 // services/map.service.js
 const axios = require('axios');
-
+const captainModel = require('../models/captain.model');
 
 const GEOAPIFY_API_KEY =
 process.env.GEOAPIFY_API
@@ -11,6 +11,7 @@ async function getCoordinates(text) {
     params: {
       text,
       format: 'json', // JSON returns data.results[0].lat/lon
+      
       apiKey: GEOAPIFY_API_KEY,
     },
   });
@@ -37,7 +38,7 @@ module.exports.getAddressCoordinate = async (address) => {
       const location = response.data.features[0].geometry.coordinates;
       // Geoapify returns [lng, lat] format
       return {
-        lat: location[1],
+        ltd: location[1],
         lng: location[0],
       };
     } else {
@@ -50,8 +51,6 @@ module.exports.getAddressCoordinate = async (address) => {
     throw error;
   }
 };
-
-
 
 module.exports.getDistanceTime = async (origin, destination, options = {}) => {
   if (!origin || !destination) {
@@ -162,3 +161,14 @@ module.exports.getSuggestions = async (input, offset = 0, limit = 10) => {
     throw error;
   }
 };
+
+module.exports.getCaptainInTheRadius = async ( ltd, lng, radius) => {
+const captain = await captainModel.find({ 
+  location: {
+    $geoWithin: {
+      $centerSphere: [ [ lng, ltd ], radius / 6371 ] // radius in radians
+    }
+  }
+});
+return captain;
+}

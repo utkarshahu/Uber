@@ -34,12 +34,12 @@ const LookingForDriver = (props) => {
             <div className="flex flex-col ml-4 w-full">
               <h1 className="text-xl font-[F3]">562/11-A</h1>
               <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                Gomti Nagar Lucknow
+                {props.pickup}
               </h1>
             </div>
           </div>
 
-          {/* Drop */}
+          {/* Destination */}
           <div className="flex items-center border-b-2 border-gray-300 pb-2">
             <div className="bg-[#eee] h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0">
               <i className="ri-map-pin-2-fill text-2xl"></i>
@@ -47,7 +47,7 @@ const LookingForDriver = (props) => {
             <div className="flex flex-col ml-4 w-full">
               <h1 className="text-xl font-[F3]">353B/5/532-A</h1>
               <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                Shiv Nagar Khadra Lucknow Shiv Nagar Khadra Lucknow Shiv Nagar
+                {props.destination}
               </h1>
             </div>
           </div>
@@ -58,7 +58,10 @@ const LookingForDriver = (props) => {
               <i className="ri-money-rupee-circle-fill text-2xl"></i>
             </div>
             <div className="flex flex-col ml-4 w-full">
-              <h1 className="text-xl font-[F3]">&#8377; 562.30</h1>
+              <h1 className="text-xl font-[F3]">
+  &#8377; {props.fare?.fares?.[props.vehicleType] || "N/A"}
+</h1>
+
               <p className="text-sm font-[F1] leading-5 text-gray-600">Cash</p>
             </div>
           </div>

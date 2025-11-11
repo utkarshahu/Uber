@@ -19,7 +19,7 @@ const RidePopup = (props) => {
             <div className='flex  items-center justify-between mb-6  bg-gray-200 rounded-2xl p-2'>
                 <div className='flex items-center   gap-3  '>
                     <img className='h-18 w-18 rounded-full object-cover' src="https://media.licdn.com/dms/image/v2/D4E03AQFtgtb63oSzhw/profile-displayphoto-crop_800_800/B4EZnDFpobIIAM-/0/1759914670397?e=1762992000&v=beta&t=7deXJkkV3adj2jC0xiJcPZwrPQsZUeoE9fcB6o9sY_g" alt="" />
-                    <h2 className='font-[F1] text-xl' >Utkarsh Sahu</h2>
+                    <h2 className='font-[F1] text-xl' >{props.ride?.user?.fullname?.firstname + " " + props.ride?.user?.fullname?.lastname }</h2>
                 </div>
                 <h5 className='font-[F3] font-semibold text-lg text-gray-600 '>2.2KM</h5>
 
@@ -38,7 +38,7 @@ const RidePopup = (props) => {
                         <div className="flex flex-col ml-4 w-full">
                             <h1 className="text-xl font-[F3]">562/11-A</h1>
                             <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                                Gomti Nagar Lucknow
+                                {props.ride?.pickup}
                             </h1>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ const RidePopup = (props) => {
                         <div className="flex flex-col ml-4 w-full">
                             <h1 className="text-xl font-[F3]">353B/5/532-A</h1>
                             <h1 className="text-sm font-[F1] leading-5 text-gray-600">
-                                Shiv Nagar Khadra Lucknow Shiv Nagar Khadra Lucknow Shiv Nagar
+                                 {props.ride?.destination}
                             </h1>
                         </div>
                     </div>
@@ -62,7 +62,7 @@ const RidePopup = (props) => {
                             <i className="ri-money-rupee-circle-fill text-2xl"></i>
                         </div>
                         <div className="flex flex-col ml-4 w-full">
-                            <h1 className="text-xl font-[F3]">&#8377; 562.30</h1>
+                            <h1 className="text-xl font-[F3]">&#8377; {props.ride?.fare}</h1>
                             <p className="text-sm font-[F1] leading-5 text-gray-600">Cash</p>
                         </div>
                     </div>
@@ -72,7 +72,9 @@ const RidePopup = (props) => {
 
               <div className="flex items-center justify-around gap-10 mt-6 w-full">
   <button
-    onClick={() => props.setConfirmRidePopupPanel(true)}
+    onClick={() =>{ props.setConfirmRidePopupPanel(true)
+        props.confirmRide()
+    }}
     className="bg-gray-500 text-white px-8 py-2 rounded-3xl text-lg font-[F2] border border-gray-800 shadow-sm
                hover:bg-gray-700 active:scale-95 transform transition duration-150 ease-out"
   >

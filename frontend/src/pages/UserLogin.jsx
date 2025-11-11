@@ -9,7 +9,9 @@ const UserLogin = () => {
   const [password, setpassword] = useState("")
 
   const [userData, setuserData] = useState({})
-  const {user,setuser} = useContext(UserDataContext)
+  const {user,
+    setUser
+  } = useContext(UserDataContext)
   const navigate = useNavigate()
 
   const submitHandler = async (e)=>{
@@ -23,7 +25,8 @@ const UserLogin = () => {
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userData)
     if(response.status === 200){
       const data = response.data
-      setuser(data.user)
+      
+      setUser(data.user)
       localStorage.setItem('token',data.token)
       navigate('/home')
 
